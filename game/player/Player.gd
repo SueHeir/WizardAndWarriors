@@ -13,6 +13,9 @@ var stand_dictionary = {-3:"Stand_northwest",-2:"Stand_north",-1:"Stand_northeas
 var max_steps;
 var current_steps;
 
+var max_health;
+var current_health;
+
 var grabbed_mana = []
 
 
@@ -30,22 +33,30 @@ func _ready():
 		add_child(act)
 		actions.append(act)
 	max_steps = 3;
+	max_health = 10;
+	current_health = max_health
 	turn_beginning();
 
 
 func set_current_vertex(vert):
-	current_vertex = vert;
-	position = current_vertex.position;
-
+	if not vert.holding_object:
+		if current_vertex:
+			current_vertex.holding_object = null
+		current_vertex = vert;
+		position = current_vertex.position;
+		vert.holding_object = self
 
 func _process(delta):
-	pass
+	if current_health < 0:
+		get_parent().reset_level();
 
 func walk_to_vertex(vert):
-	if current_steps > 0:
+	if current_steps > 0 and not vert.holding_object:
 		current_steps-=1;
 		old_vertex = current_vertex;
+		old_vertex.holding_object = null
 		current_vertex = vert;
+		current_vertex.holding_object = self
 		
 		angle = atan2(current_vertex.position.y-old_vertex.position.y,current_vertex.position.x-old_vertex.position.x)
 		state_machine.set_state(state_machine.states.walk);

@@ -20,7 +20,10 @@ func load_action_bar_texture(action_bar_texture_path):
 	action_bar_texture_clicked = load(action_bar_texture_path+"_clicked.png")
 
 func do_action(player, map_object):
+	#print("spentMana")
+	spend_mana(player)
 	map_object.do_action = null
+	
 
 
 func check_mana_requirements(player):
@@ -43,6 +46,17 @@ func get_useable_map_spots(map, player):
 	pass
 
 
-func spend_mana():
-	pass
+func spend_mana(player):
+	for ma in mana_cost:
+		var check_off_mana = false
+		for mana in player.current_vertex.adjacent_mana:
+			if ma == mana.mana_type and mana.used == false:
+				mana.used = true
+				check_off_mana = true
+				continue
+		if not check_off_mana:
+			for mana in player.grabbed_mana:
+				if ma == mana.mana_type and mana.grabbed_used == false:
+					mana.grabbed_used = true
+					continue
 

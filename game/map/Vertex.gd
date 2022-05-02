@@ -11,6 +11,10 @@ var adjacent_mana = []
 var active_action = null
 var do_action = null
 
+var holding_object = null
+
+var monster_visited = false
+
 func _ready():
 	pass
 

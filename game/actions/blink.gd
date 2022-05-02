@@ -13,5 +13,6 @@ func get_useable_map_spots(map, player):
 
 
 func do_action(player, map_object):
+	.do_action(player, map_object)
 	player.set_current_vertex(map_object)
 	

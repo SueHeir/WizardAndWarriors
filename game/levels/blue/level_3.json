@@ -1,0 +1,26 @@
+{	
+	"map_start_vertex":0,
+
+	"vertex_positions": [
+		{"x": 74,"y": 74},
+		{"x": 1000,"y": 1000}
+
+		
+	],
+	"vertex_connections": [
+	
+	],
+	"mana_points": [
+		
+	],
+	"mana_connections": [
+	
+		
+	],
+	"monster_positions": [
+		
+	],
+	"monster_names": [
+		
+	]
+}

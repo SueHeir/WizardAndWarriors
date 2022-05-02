@@ -11,5 +11,6 @@ func get_useable_map_spots(map, player):
 
 
 func do_action(player, map_object):
+	.do_action(player, map_object)
 	player.current_steps += 1
 	player.walk_to_vertex(map_object)

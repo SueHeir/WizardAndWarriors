@@ -9,14 +9,21 @@ const VERTEX = preload("res://map/Vertex.tscn")
 const EDGE = preload("res://map/Edge.tscn")
 const MANA = preload("res://map/Mana.tscn")
 
+const MONSTER = preload("res://monsters/Monster.tscn")
+
 var map_json_dict = {}
 
 var vertexes = []
 var edges = []
 var mana = []
+var monsters = []
 
 var vertex_positons = [];
 var vertex_connections = [];
+var monster_positions = [];
+var monster_names = [];
+var starting_vertex_index
+
 
 var mana_positions = [];
 var mana_colors = [];
@@ -25,8 +32,14 @@ var mana_connections = [];
 var clicked = []
 
 
+
 func _ready():
-	var default_json_map = "res://levels/blue/level_1.json";
+	var save_json = "res://saves/saves.json";
+	var save_json_dict = load_json_file(save_json);
+	
+	var level = save_json_dict["current_level"]
+	
+	var default_json_map = "res://levels/blue/level_"+str(level)+".json";
 	map_json_dict = load_json_file(default_json_map);
 	
 	create_map();
@@ -48,6 +61,9 @@ func load_json_file(path):
 	return obj
 	
 func create_map():
+	
+	starting_vertex_index = map_json_dict["map_start_vertex"]
+	
 	#Loads Data from Json Dictionary into Vectors for creating the map
 	for obj in map_json_dict["vertex_positions"]:
 		vertex_positons.append(Vector2(obj["x"],obj["y"]))
@@ -58,6 +74,10 @@ func create_map():
 		mana_colors.append(obj["color"])
 	for obj in map_json_dict["mana_connections"]:
 		mana_connections.append(Vector2(obj["A"],obj["B"]))
+	for obj in map_json_dict["monster_positions"]:
+		monster_positions.append(obj["Vertex"])
+	for obj in map_json_dict["monster_names"]:
+		monster_names.append(obj["monster_name"])
 	
 	#Creates Vertex scene and sets it's poition
 	for i in vertex_positons.size():
@@ -97,13 +117,21 @@ func create_map():
 	for i in mana_connections.size():
 		vertexes[mana_connections[i].y].add_adjacent_mana(mana[mana_connections[i].x])
 		mana[mana_connections[i].x].add_adjacent_vertex(vertexes[mana_connections[i].y])
+		
+	
+	for i in monster_positions.size():
+		var monster = MONSTER.instance();
+		monster.set_type(monster_names[i])
+		monster.set_current_vertex(vertexes[monster_positions[i]])
+		monsters.append(monster)
+		add_child(monster)
 
 
 
 func _process(delta):
 	for map_object in clicked:
 		if map_object.do_action:
-			print("did action")
+			#print("did action")
 			map_object.do_action.do_action(player, map_object);
 			break
 		
@@ -122,6 +150,10 @@ func _process(delta):
 
 
 func next_turn():
+	
+	for monster in monsters:
+		monster.process_turn(player);
+	
 	for ma in mana:
 		ma.next_turn();
 	for vertex in vertexes:
@@ -136,3 +168,7 @@ func clear_actions():
 		vertex.clear_actions();
 	for edge in edges:
 		edge.clear_actions();
+		
+func clear_vertex_visited_data():
+	for vertex in vertexes:
+		vertex.monster_visited = false;

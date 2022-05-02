@@ -15,6 +15,12 @@ func _ready():
 	zoom = Vector2(0.4,0.4)
 	
 	pass
+	
+func _process(delta):
+	if player.state_machine.state == player.state_machine.states["walk"]:
+		position = lerp(position, player.position, 0.1)
+	else:
+		position = lerp(position, player.position, 0.02)
 
 func is_zooming():
 	return events.size()>1

@@ -599,12 +599,11 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="Player" type="AnimatedSprite"]
+[node name="Player" type="AnimatedSprite" groups=["friendly"]]
 position = Vector2( 0, -1 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 129 )
 animation = "Stand_south"
-frame = 3
 playing = true
 offset = Vector2( -0.5, -15.5 )
 script = ExtResource( 3 )
