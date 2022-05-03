@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://map/Map.gd" type="Script" id=2]
@@ -6,8 +6,10 @@
 [ext_resource path="res://Camera2D.gd" type="Script" id=4]
 [ext_resource path="res://assets/next.png" type="Texture" id=5]
 [ext_resource path="res://gui/Mana_Bar.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Label.gd" type="Script" id=7]
+[ext_resource path="res://gui/Movement_bar.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Action_bar.gd" type="Script" id=8]
+[ext_resource path="res://gui/health_hearts_bar.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Back_Button.gd" type="Script" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15, 7 )
@@ -20,7 +22,7 @@ script = ExtResource( 2 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 549, 278 )
-frame = 0
+frame = 7
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 550, 282 )
@@ -89,25 +91,53 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Camera2D/CanvasLayer"]
-margin_right = 40.0
-margin_bottom = 14.0
-script = ExtResource( 7 )
+[node name="ColorRect" type="ColorRect" parent="Camera2D/CanvasLayer"]
+margin_right = 167.0
+margin_bottom = 64.0
+color = Color( 0.129412, 0.12549, 0.12549, 0.913725 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Win" type="Label" parent="Camera2D/CanvasLayer"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -7.0
-margin_right = 20.0
-margin_bottom = 7.0
+[node name="Health_bar" type="Control" parent="Camera2D/CanvasLayer"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hearts_Health_Bar" parent="Camera2D/CanvasLayer/Health_bar" instance=ExtResource( 9 )]
+
+[node name="Movement_bar" type="Control" parent="Camera2D/CanvasLayer"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Movement_bar" parent="Camera2D/CanvasLayer/Movement_bar" instance=ExtResource( 7 )]
+
+[node name="Label" type="Label" parent="Camera2D/CanvasLayer"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -241.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back_Button" type="Button" parent="Camera2D/CanvasLayer"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -116.0
+margin_top = 14.0
+margin_right = -17.0
+margin_bottom = 34.0
+text = "Back to Menu"
+script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [connection signal="released" from="Camera2D/CanvasLayer/Next_controller/Next" to="." method="_on_Next_released"]
+[connection signal="pressed" from="Camera2D/CanvasLayer/Back_Button" to="Camera2D/CanvasLayer/Back_Button" method="_on_Back_Button_pressed"]

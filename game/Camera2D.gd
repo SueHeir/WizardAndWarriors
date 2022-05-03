@@ -12,7 +12,7 @@ onready var player = get_node("../Player")
 
 func _ready():
 	set_process_unhandled_input(true)
-	zoom = Vector2(0.4,0.4)
+	zoom = Vector2(0.7,0.7)
 	
 	pass
 	

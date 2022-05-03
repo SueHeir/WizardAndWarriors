@@ -1,0 +1,174 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://main_menu/Main_Menu.gd" type="Script" id=1]
+[ext_resource path="res://save_game.gd" type="Script" id=2]
+
+[node name="Main" type="Control"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -550.0
+margin_top = -600.0
+margin_right = 550.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+game_save_class = ExtResource( 2 )
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -212.5
+margin_top = -129.0
+margin_right = 212.5
+margin_bottom = 129.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Main_Menu" type="VBoxContainer" parent="Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -165.0
+margin_top = -60.0
+margin_right = 165.0
+margin_bottom = 60.0
+custom_constants/separation = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level_select" type="Button" parent="Panel/Main_Menu"]
+margin_right = 330.0
+margin_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Level Select"
+
+[node name="Settings" type="Button" parent="Panel/Main_Menu"]
+margin_top = 41.0
+margin_right = 330.0
+margin_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Settings"
+
+[node name="Quit" type="Button" parent="Panel/Main_Menu"]
+margin_top = 83.0
+margin_right = 330.0
+margin_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Quit"
+
+[node name="Levels" type="Control" parent="Panel"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Levels_Scrollcontainer" type="ScrollContainer" parent="Panel/Levels"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -166.5
+margin_top = -59.0
+margin_right = 170.5
+margin_bottom = 67.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Levels/Levels_Scrollcontainer"]
+margin_right = 337.0
+margin_bottom = 126.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 3
+
+[node name="Level_1" type="Button" parent="Panel/Levels/Levels_Scrollcontainer/VBoxContainer"]
+margin_right = 337.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level_2" type="Button" parent="Panel/Levels/Levels_Scrollcontainer/VBoxContainer"]
+margin_top = 43.0
+margin_right = 337.0
+margin_bottom = 83.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Level 2"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level_3" type="Button" parent="Panel/Levels/Levels_Scrollcontainer/VBoxContainer"]
+margin_top = 86.0
+margin_right = 337.0
+margin_bottom = 126.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Level 3"
+
+[node name="back" type="Button" parent="Panel/Levels"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 62.0
+margin_right = 2.0
+margin_bottom = 82.0
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -72.0
+margin_top = -109.0
+margin_right = 73.0
+margin_bottom = -78.0
+text = "Wizzards And Warriors
+"
+
+[connection signal="pressed" from="Panel/Main_Menu/Level_select" to="." method="_on_Level_select_pressed"]
+[connection signal="pressed" from="Panel/Main_Menu/Quit" to="." method="_on_Quit_pressed"]
+[connection signal="pressed" from="Panel/Levels/Levels_Scrollcontainer/VBoxContainer/Level_1" to="." method="_on_Level_1_pressed"]
+[connection signal="pressed" from="Panel/Levels/Levels_Scrollcontainer/VBoxContainer/Level_2" to="." method="_on_Level_2_pressed"]
+[connection signal="pressed" from="Panel/Levels/Levels_Scrollcontainer/VBoxContainer/Level_3" to="." method="_on_Level_3_pressed"]
+[connection signal="pressed" from="Panel/Levels/back" to="." method="_on_back_pressed"]

@@ -47,10 +47,13 @@ func set_current_vertex(vert):
 		vert.holding_object = self
 
 func _process(delta):
-	if current_health < 0:
+	if current_health <= 0:
 		get_parent().reset_level();
 
 func walk_to_vertex(vert):
+	if get_parent().monster_processing:
+		return false
+	
 	if current_steps > 0 and not vert.holding_object:
 		current_steps-=1;
 		old_vertex = current_vertex;

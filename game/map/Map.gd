@@ -34,15 +34,20 @@ var clicked = []
 
 
 func _ready():
-	var save_json = "res://saves/saves.json";
-	var save_json_dict = load_json_file(save_json);
 	
-	var level = save_json_dict["current_level"]
+	var saved_game = ResourceLoader.load("user://save.tres")
+	var level = saved_game.current_level
+	
+	#var save_json = "res://saves/saves.json";
+	#var save_json_dict = load_json_file(save_json);
+	
+	#var level = save_json_dict["current_level"]
 	
 	var default_json_map = "res://levels/blue/level_"+str(level)+".json";
 	map_json_dict = load_json_file(default_json_map);
 	
 	create_map();
+	
 	
 func load_json_file(path):
 	"""Loads a JSON file from the given res path and return the loaded JSON object."""
@@ -129,6 +134,14 @@ func create_map():
 
 
 func _process(delta):
+	
+	var all_false = true
+	for monster in monsters:
+		if monster.is_processing_turn:
+			all_false = false
+	if all_false and get_parent().monster_processing:
+		get_parent().monsters_done_processing = true;
+	
 	for map_object in clicked:
 		if map_object.do_action:
 			#print("did action")
@@ -147,13 +160,11 @@ func _process(delta):
 	clicked.clear();
 
 
-
-
-func next_turn():
-	
+func process_monsters():
 	for monster in monsters:
 		monster.process_turn(player);
-	
+
+func next_turn():
 	for ma in mana:
 		ma.next_turn();
 	for vertex in vertexes:

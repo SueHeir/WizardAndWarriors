@@ -33,13 +33,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Wizards_and_Warriors"
-run/main_scene="res://Main.tscn"
+run/main_scene="res://main_menu/Main_Menu.tscn"
 config/icon="res://icon.png"
 
 [display]
 
-window/size/width=1600
-window/size/height=900
+window/size/width=1100
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 

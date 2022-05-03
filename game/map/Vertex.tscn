@@ -24,16 +24,18 @@ animations = [ {
 } ]
 
 [sub_resource type="CapsuleShape2D" id=4]
-radius = 9.0
-height = 14.0
+radius = 12.0
+height = 16.0001
 
 [node name="Vertex" type="AnimatedSprite"]
 frames = SubResource( 3 )
 script = ExtResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="."]
+position = Vector2( -417, -28 )
 
 [node name="Oval" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 417, 28 )
 rotation = 1.5708
 shape = SubResource( 4 )
 
