@@ -1,6 +1,12 @@
 {
-
+	"player_actions": ["dash.gd","blink.gd"],
 	"map_start_vertex":5,
+
+	"win_conditions": {
+		"go_to_vertex": 20,
+		"all_monsters_dead": false
+	},
+
 
 	"vertex_positions": [
 		{"x": 0,"y": 0},

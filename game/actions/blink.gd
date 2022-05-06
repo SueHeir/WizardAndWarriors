@@ -8,7 +8,7 @@ func _ready():
 func get_useable_map_spots(map, player):
 	for vertex in map.vertexes:
 		var distance = player.position - vertex.position;
-		if distance.length() < 140:
+		if distance.length() < 140 and vertex!= player.current_vertex:
 			vertex.set_active_action(self)
 
 

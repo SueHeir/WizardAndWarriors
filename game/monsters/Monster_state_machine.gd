@@ -36,6 +36,8 @@ func _enter_state(new_state,old_state):
 			elif parent.handle_walk_que():
 				continue
 			else:
+				parent.walk_target = null
+				parent.walk_target_location = null
 				parent.is_processing_turn = false
 		states.walk:
 			parent.walk_animation();

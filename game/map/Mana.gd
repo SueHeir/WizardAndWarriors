@@ -32,22 +32,22 @@ func add_adjacent_vertex(vertex):
 func set_grabbed(t_or_f):
 	if t_or_f:
 		grabbed = true;
-		animation = "grabbed";
-		frame = fram_colors[mana_type];
+		animation = mana_type+"_grabbed";
+		
 	else:
 		grabbed = false;
-		animation = "default";
-		frame = fram_colors[mana_type];
+		animation = mana_type;
 
 func _draw():
-	for vertex in adjacent_vertexes:
+	#for vertex in adjacent_vertexes:
 		#print('test')
-		draw_line(Vector2(0,0), vertex.position - position, colors[mana_type], 1.1, true)
-		
+		#draw_line(Vector2(0,0), vertex.position - position, colors[mana_type], 1.1, true)
+	pass
 
 func set_mana_type(color):
 	mana_type = color;
-	frame = fram_colors[color];
+	animation = mana_type;
+	$CPUParticles2D.texture = load("res://assets/map/"+mana_type+"_p.png")
 
 func _on_Area2D_mouse_entered():
 	Hover = true;

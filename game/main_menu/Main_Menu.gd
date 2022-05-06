@@ -45,3 +45,10 @@ func _on_Level_3_pressed():
 	save_game.current_level = 3
 	ResourceSaver.save("user://save.tres", save_game)
 	get_tree().change_scene("res://Main.tscn")
+
+
+func _on_Level_4_pressed():
+	var save_game = game_save_class.new()
+	save_game.current_level = 4
+	ResourceSaver.save("user://save.tres", save_game)
+	get_tree().change_scene("res://Main.tscn")

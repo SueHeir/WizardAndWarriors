@@ -6,7 +6,7 @@ var Buttons = []
 
 var active_button = false
 var clear_action = false
-
+var clear_action_timer = 0
 onready var player = get_node("../../../Player")
 onready var main = get_node("../../../../Main")
 
@@ -16,18 +16,22 @@ func _ready():
 	pass # Replace with function body.
 func _process(delta):
 	if clear_action:
-		main.set_current_action(null)
-		clear_action = false
-	
-func _unhandled_input(event):
-	if event is InputEventScreenTouch and active_button:
-		if event.pressed:
+		clear_action_timer+= delta
+		if clear_action_timer>0.1:
+			clear_action_timer = 0
+			clear_action = false
 			for but in Buttons:
 				if but.toggle_mode:
 					but.pressed = false
 					but.toggle_mode = false
 					active_button = false
-					clear_action = true
+					main.set_current_action(null)
+					
+	
+func _unhandled_input(event):
+	if event is InputEventScreenTouch and active_button:
+		if event.pressed:
+			clear_action = true
 
 
 

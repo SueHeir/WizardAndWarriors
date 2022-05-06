@@ -27,6 +27,16 @@ var actions = []
 onready var state_machine = $StateMachine;
 func _ready():
 	
+	var saved_game = ResourceLoader.load("user://save.tres")
+	var level = saved_game.current_level
+	
+	var default_json_map = "res://levels/blue/level_"+str(level)+".json";
+	var json_dict = load_json_file(default_json_map);
+	
+	init_actions_list = json_dict["player_actions"]
+	
+	
+	
 	for action in init_actions_list:
 		var Act = load("res://actions/"+ action)
 		var act = Act.new()
@@ -129,4 +139,25 @@ func turn_beginning():
 
 func next_turn():
 	current_steps = max_steps;
+
+
+
+
+func load_json_file(path):
+	"""Loads a JSON file from the given res path and return the loaded JSON object."""
+	var file = File.new()
+	file.open(path, file.READ)
+	var text = file.get_as_text()
+	var result_json = JSON.parse(text)
+	if result_json.error != OK:
+		print("[load_json_file] Error loading JSON file '" + str(path) + "'.")
+		print("\tError: ", result_json.error)
+		print("\tError Line: ", result_json.error_line)
+		print("\tError String: ", result_json.error_string)
+		return null
+	var obj = result_json.result
+	file.close();
+	return obj
+
+
 

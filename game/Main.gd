@@ -4,8 +4,25 @@ var current_action;
 var monsters_done_processing = false;
 var monster_processing = false;
 
+var has_won_level = false
+
 
 func _ready():
+	var saved_game = ResourceLoader.load("user://save.tres")
+	var level = saved_game.current_level
+	
+	var background_texture =  load("res://assets/Levels/Blue/Level_" + str(level) + ".png")
+	
+	if level == 1:
+		$Background_1.visible = true
+		$Background_2.visible = false
+	elif level == 2:
+		$Background_1.visible = false
+		$Background_2.visible = true
+	else:
+		$Background_1.visible = false
+		$Background_2.visible = false
+	
 	$Player.set_current_vertex($Map.vertexes[$Map.starting_vertex_index])
 	$Camera2D.position = $Player.position
 	$Camera2D/CanvasLayer/Action_bar.init_player_actions($Player)
@@ -32,8 +49,7 @@ func _process(delta):
 	
 	
 	
-	if $Player.current_vertex == $Map.vertexes[$Map.vertexes.size()-1]:
-		
+	if has_won_level:
 		var saved_game = ResourceLoader.load("user://save.tres")
 		saved_game.current_level +=1
 		ResourceSaver.save("user://save.tres",saved_game)

@@ -142,6 +142,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Level 3"
 
+[node name="Level_4" type="Button" parent="Panel/Levels/Levels_Scrollcontainer/VBoxContainer"]
+margin_right = 12.0
+margin_bottom = 20.0
+text = "Level 4"
+
 [node name="back" type="Button" parent="Panel/Levels"]
 anchor_top = 1.0
 anchor_right = 1.0
@@ -171,4 +176,5 @@ text = "Wizzards And Warriors
 [connection signal="pressed" from="Panel/Levels/Levels_Scrollcontainer/VBoxContainer/Level_1" to="." method="_on_Level_1_pressed"]
 [connection signal="pressed" from="Panel/Levels/Levels_Scrollcontainer/VBoxContainer/Level_2" to="." method="_on_Level_2_pressed"]
 [connection signal="pressed" from="Panel/Levels/Levels_Scrollcontainer/VBoxContainer/Level_3" to="." method="_on_Level_3_pressed"]
+[connection signal="pressed" from="Panel/Levels/Levels_Scrollcontainer/VBoxContainer/Level_4" to="." method="_on_Level_4_pressed"]
 [connection signal="pressed" from="Panel/Levels/back" to="." method="_on_back_pressed"]

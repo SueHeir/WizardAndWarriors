@@ -47,16 +47,23 @@ func get_useable_map_spots(map, player):
 
 
 func spend_mana(player):
-	for ma in mana_cost:
-		var check_off_mana = false
-		for mana in player.current_vertex.adjacent_mana:
-			if ma == mana.mana_type and mana.used == false:
-				mana.used = true
-				check_off_mana = true
-				continue
-		if not check_off_mana:
+	var temp_mana_cost = [] + mana_cost
+	
+	while(temp_mana_cost.size()>0):
+		for i in range(temp_mana_cost.size()-1,-1,-1):
+			for mana in player.current_vertex.adjacent_mana:
+				if temp_mana_cost[i] == mana.mana_type and mana.used == false:
+					mana.used = true
+					temp_mana_cost.remove(i)
+					if temp_mana_cost.size()==0:
+						return
+					continue
+			
 			for mana in player.grabbed_mana:
-				if ma == mana.mana_type and mana.grabbed_used == false:
+				if temp_mana_cost[i] == mana.mana_type and mana.grabbed_used == false:
 					mana.grabbed_used = true
+					temp_mana_cost.remove(i)
+					if temp_mana_cost.size()==0:
+						return
 					continue
 

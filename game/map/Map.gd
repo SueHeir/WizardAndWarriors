@@ -17,6 +17,8 @@ var vertexes = []
 var edges = []
 var mana = []
 var monsters = []
+var dead_monsters = []
+
 
 var vertex_positons = [];
 var vertex_connections = [];
@@ -31,17 +33,15 @@ var mana_connections = [];
 
 var clicked = []
 
-
+var need_all_monsters_dead = false
+var monster_win_condition = false
+var vertex_to_end_level
+var at_end_of_level = false
 
 func _ready():
 	
 	var saved_game = ResourceLoader.load("user://save.tres")
 	var level = saved_game.current_level
-	
-	#var save_json = "res://saves/saves.json";
-	#var save_json_dict = load_json_file(save_json);
-	
-	#var level = save_json_dict["current_level"]
 	
 	var default_json_map = "res://levels/blue/level_"+str(level)+".json";
 	map_json_dict = load_json_file(default_json_map);
@@ -69,6 +69,7 @@ func create_map():
 	
 	starting_vertex_index = map_json_dict["map_start_vertex"]
 	
+	
 	#Loads Data from Json Dictionary into Vectors for creating the map
 	for obj in map_json_dict["vertex_positions"]:
 		vertex_positons.append(Vector2(obj["x"],obj["y"]))
@@ -83,6 +84,10 @@ func create_map():
 		monster_positions.append(obj["Vertex"])
 	for obj in map_json_dict["monster_names"]:
 		monster_names.append(obj["monster_name"])
+	
+	
+	
+	
 	
 	#Creates Vertex scene and sets it's poition
 	for i in vertex_positons.size():
@@ -101,12 +106,15 @@ func create_map():
 			#if the vertex's edge hasn't been made yet make it
 			if(!vertex.adjacent_vertexes_drawn_edge[i]):
 				#Set Vertex A and Vertex B so that they have "made" their edge
+				var edge_inst = EDGE.instance();
+				edge_inst.adjacent_vertexes.append(vertex)
 				vertex.adjacent_vertexes_drawn_edge[i] = true;
 				for j in vertex.adjacent_vertexes[i].adjacent_vertexes.size():
 					if(vertex.adjacent_vertexes[i].adjacent_vertexes[j]==vertex):
 						vertex.adjacent_vertexes[i].adjacent_vertexes_drawn_edge[j] = true;
-				var edge_inst = EDGE.instance();
+						edge_inst.adjacent_vertexes.append(vertex.adjacent_vertexes[i])
 				edge_inst.set_pos(vertex.position,vertex.adjacent_vertexes[i].position);
+				
 				edges.append(edge_inst);
 				add_child(edge_inst);
 	
@@ -132,8 +140,53 @@ func create_map():
 		add_child(monster)
 
 
+	if map_json_dict["win_conditions"]["go_to_vertex"] == -1:
+			at_end_of_level = true
+	else:
+		vertex_to_end_level = vertexes[map_json_dict["win_conditions"]["go_to_vertex"]]
+	if map_json_dict["win_conditions"]["all_monsters_dead"]:
+		need_all_monsters_dead = true
+	else:
+		monster_win_condition = true
+
 
 func _process(delta):
+	
+	
+	
+	for monster in dead_monsters:
+		var index = monsters.find(monster)
+		if index != -1:
+			monsters.remove(index)
+			monster.queue_free()
+		
+	if need_all_monsters_dead and monsters.size()==0:
+		monster_win_condition = true
+	
+	if vertex_to_end_level:
+		if vertex_to_end_level == player.current_vertex:
+			at_end_of_level = true
+		else:
+			at_end_of_level = false
+	
+	if monster_win_condition and at_end_of_level:
+		get_parent().has_won_level = true
+	
+	#for vert in vertexes:
+	#	vert.visible = false
+	
+	#for vert in vertexes:
+#		if vert.holding_object or vert.Hover or vert.active_action:
+#			vert.visible = true
+#			for aj_verts in vert.adjacent_vertexes:
+#				aj_verts.visible = true
+#	for edge in edges:
+#		edge.visible = false
+#	for edge in edges:
+#		for vert in edge.adjacent_vertexes:
+#			if vert.holding_object or vert.Hover or vert.active_action:
+#				edge.visible = true
+	
 	
 	var all_false = true
 	for monster in monsters:

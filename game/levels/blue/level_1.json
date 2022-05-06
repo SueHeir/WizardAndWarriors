@@ -1,5 +1,14 @@
 {	
+	"player_actions": ["blink.gd"],
+	
 	"map_start_vertex":0,
+	
+	"win_conditions": {
+		"go_to_vertex": 8,
+		"all_monsters_dead": false
+	},
+
+
 
 	"vertex_positions": [
 		{"x": 74,"y": 74},

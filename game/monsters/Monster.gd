@@ -19,12 +19,17 @@ var max_steps;
 var current_steps;
 var walk_path = []
 var walk_queue = []
+var walk_target
+var walk_target_location
+var at_target = false
 
 var is_processing_turn
 
 
 var max_health;
 var current_health;
+var last_checked_health = -1;
+
 var melee_damage
 
 var grabbed_mana = []
@@ -38,11 +43,15 @@ var current_action_on_obejct
 onready var state_machine = $StateMachine;
 func _ready():
 	max_steps = 5;
-	max_health = 10;
+	current_steps = max_steps
+	max_health = 4;
 	current_health = max_health
 	melee_damage = 7;
 	attacks_left_this_turn = [] +attack_list
-	turn_beginning();
+	$Hearts_Health_Bar.scale = Vector2(0.25,0.25)
+	$Hearts_Health_Bar.position = $Hearts_Health_Bar.position + Vector2(-8,-34)
+	
+	
 
 func set_type(type):
 	monster_type = type;
@@ -58,14 +67,25 @@ func set_current_vertex(vert):
 
 
 func _process(delta):
-	pass
+	if current_health <= 0:
+		get_parent().dead_monsters.append(self)
+		
+	$Hearts_Health_Bar.set_health_bar(current_health,max_health)
+	if last_checked_health != current_health:
+		last_checked_health = current_health
+		$Hearts_Health_Bar.visible = true
+		$Hearts_Health_Bar/Health_display_timer.start()
 	
+
 	
 func process_turn(player):
 	is_processing_turn = true
+	walk_target = player
+	walk_target_location = player.current_vertex
+	current_steps = max_steps
 	attacks_left_this_turn = [] + attack_list	
 	handle_attack_que()
-	go_to_vertex(player.current_vertex)
+	go_to_vertex(walk_target_location)
 	
 
 func handle_attack_que():
@@ -87,12 +107,19 @@ func handle_attack_que():
 
 
 func handle_walk_que():
+	
 	if walk_queue.size() > 0:
 		var vertex = walk_queue[0]
 		walk_queue.remove(0)
 		walk_to_vertex(vertex)
 		return true
 	else:
+		if walk_target:
+			if walk_target_location != walk_target.current_vertex:
+				if is_processing_turn:
+					walk_target_location = walk_target.current_vertex
+					go_to_vertex(walk_target_location)
+					return true
 		return false
 
 func walk_to_vertex(vert):
@@ -184,9 +211,6 @@ func grab_mana(mana):
 		mana.set_grabbed(true);
 		get_parent().next_turn();
 
-	
-func turn_beginning():
-	current_steps = max_steps;
 
 
 
@@ -194,16 +218,17 @@ func next_turn():
 	current_steps = max_steps;
 
 
+
 func go_to_vertex(vertex_goal):
 	walk_queue.clear()
 	var path = breath_first_search_to_vertex(vertex_goal,current_vertex)
-	var walk_distance = min(path.size()-1, max_steps)
-	print("next_search")
+	var walk_distance = min(path.size()-1, current_steps)
+	#print("next_search")
 	for i in range(walk_distance):
 		walk_queue.append(path[i])
 	#print(walk_queue)
-	handle_walk_que()
 	get_parent().clear_vertex_visited_data();
+	handle_walk_que()
 
 
 func breath_first_search_to_vertex(vertex_goal,current_position):
@@ -218,7 +243,7 @@ func breath_first_search_to_vertex(vertex_goal,current_position):
 	
 	while(true):
 		
-		print(possible_paths)
+		#print(possible_paths)
 		var paths_to_add = []
 		for path in possible_paths:
 			if path.back() == vertex_goal:
